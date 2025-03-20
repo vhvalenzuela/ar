@@ -3,51 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>V3 - Visualizar poster-girl.reality</title>
+    <title>Experiencia AR - Poster Girl</title>
     <style>
         body {
-            margin: 0;
-            overflow: hidden;
             font-family: -apple-system, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
         }
-        #ar-container {
-            width: 100vw;
-            height: 100vh;
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: #007AFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .button:hover {
+            background-color: #005BB5;
         }
     </style>
 </head>
 <body>
-    <div id="ar-container"></div>
+    <h1>Bienvenido a la experiencia AR de Poster Girl</h1>
+    <p id="message">Detectando tu dispositivo...</p>
+    <button id="redirectButton" class="button" style="display: none;">Ir a la experiencia</button>
 
-    <script src="https://cdn.jsdelivr.net/npm/@apple/realitykit-js@1.0.0/dist/realitykit.js"></script>
     <script>
-        // Verificar acceso a la cámara
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(() => {
-                console.log('Cámara accesible');
-                // Cargar el archivo .reality
-                const container = document.getElementById('ar-container');
-                const realityFileURL = 'poster-girl.reality'; // Reemplaza con la URL de tu archivo
+        // Función para detectar el ecosistema del dispositivo
+        function detectarEcosistema() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-                // Inicializar Reality Composer
-                const realityView = new RealityKit.View({
-                    container: container,
-                    allowsCameraControl: true,
-                    dynamicCompass: true,
-                });
+            // Detectar si es un dispositivo Apple
+            if (/iPad|iPhone|iPod|Macintosh/.test(userAgent)) {
+                return "apple";
+            }
+            // Detectar si es un dispositivo Android
+            else if (/android/i.test(userAgent)) {
+                return "android";
+            }
+            // Si no es compatible
+            else {
+                return "no-compatible";
+            }
+        }
 
-                // Cargar y mostrar el archivo .reality
-                realityView.loadScene(realityFileURL).then(() => {
-                    console.log('Escena cargada correctamente');
-                }).catch((error) => {
-                    console.error('Error al cargar la escena:', error);
-                });
-            })
-            .catch((error) => {
-                console.error('Error al acceder a la cámara:', error);
-            });
+        // Función para redirigir al usuario
+        function redirigirUsuario() {
+            const ecosistema = detectarEcosistema();
+            const messageElement = document.getElementById('message');
+            const buttonElement = document.getElementById('redirectButton');
+
+            if (ecosistema === "apple") {
+                // Redirigir a la experiencia AR para Apple (.reality o .usdz)
+                messageElement.textContent = "Tu dispositivo es compatible con la experiencia AR de Apple.";
+                buttonElement.textContent = "Abrir experiencia AR";
+                buttonElement.style.display = "block";
+                buttonElement.onclick = () => {
+                    window.location.href = "https://vhvalenzuela.github.io/ar/poster-girl.reality"; // Cambia a .usdz si es necesario
+                };
+            }
+            else if (ecosistema === "android") {
+                // Redirigir a la experiencia AR para Android (por ejemplo, un enlace a una app o web AR)
+                messageElement.textContent = "Tu dispositivo es Android. Te redirigiremos a una experiencia compatible.";
+                buttonElement.textContent = "Ir a la experiencia para Android";
+                buttonElement.style.display = "block";
+                buttonElement.onclick = () => {
+                    window.location.href = "https://ejemplo-android-ar.com"; // Cambia por tu enlace
+                };
+            }
+            else {
+                // Mostrar mensaje de incompatibilidad
+                messageElement.textContent = "Lo sentimos, tu dispositivo no es compatible con esta experiencia AR.";
+                buttonElement.style.display = "none";
+            }
+        }
+
+        // Ejecutar la detección al cargar la página
+        window.onload = redirigirUsuario;
     </script>
 </body>
 </html>
