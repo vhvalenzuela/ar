@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar poster-girl.reality</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: -apple-system, sans-serif;
+        }
+        #ar-container {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="ar-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@apple/realitykit-js@1.0.0/dist/realitykit.js"></script>
+    <script>
+        // Cargar el archivo .reality
+        const container = document.getElementById('ar-container');
+        const realityFileURL = 'poster-girl.reality'; // Reemplaza con la URL de tu archivo
+
+        // Inicializar Reality Composer
+        const realityView = new RealityKit.View({
+            container: container,
+            allowsCameraControl: true,
+            dynamicCompass: true,
+        });
+
+        // Cargar y mostrar el archivo .reality
+        realityView.loadScene(realityFileURL).then(() => {
+            console.log('Escena cargada correctamente');
+        }).catch((error) => {
+            console.error('Error al cargar la escena:', error);
+        });
+    </script>
+</body>
+</html>
