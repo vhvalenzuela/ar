@@ -23,7 +23,7 @@
     <script>
         // Cargar el archivo .reality
         const container = document.getElementById('ar-container');
-        const realityFileURL = 'https://vhvalenzuela.github.io/ar/poster-girl.reality'; // Reemplaza con la URL de tu archivo
+        const realityFileURL = './poster-girl.reality'; // Asegúrate de que la ruta sea correcta
 
         // Inicializar Reality Composer
         const realityView = new RealityKit.View({
@@ -33,11 +33,13 @@
         });
 
         // Cargar y mostrar el archivo .reality
-        realityView.loadScene(realityFileURL).then(() => {
-            console.log('Escena cargada correctamente');
-        }).catch((error) => {
-            console.error('Error al cargar la escena:', error);
-        });
+        realityView.loadScene(realityFileURL)
+            .then(() => {
+                console.log('Escena cargada correctamente');
+            })
+            .catch((error) => {
+                console.error('Error al cargar la escena:', error);
+            });
     </script>
 </body>
 </html>
